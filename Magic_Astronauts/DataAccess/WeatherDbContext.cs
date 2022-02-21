@@ -11,4 +11,14 @@ public class WeatherDbContext : DbContext
     {
             optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=MagicAstronauts;Integrated Security=True");
     }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<WeatherData>(entity =>
+        {
+            entity.HasKey(e=> e.Id);
+
+        });
+    }
 }
