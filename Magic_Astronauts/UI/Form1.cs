@@ -1,12 +1,13 @@
 using Magic_Astronauts.Core;
-using System.ComponentModel;
+using Magic_Astronauts.DataAccess;
+using Microsoft.Data.SqlClient;
 using System.Data;
 
 namespace Magic_Astronauts
 {
     public partial class Form1 : Form
     {
-        List<Weather> weatherList = new List<Weather>();
+        IList<Weather> weatherData = new List<Weather>();
         public Form1()
         {
             InitializeComponent();
@@ -17,7 +18,7 @@ namespace Magic_Astronauts
             OpenFileDialog fileDialog = new OpenFileDialog();
             fileDialog.Title = "Select File";
             fileDialog.FileName = txtFileName.Text;
-            fileDialog.Filter = "Excel Sheet (*.xls)|*.xls|(*.xlsx)|*.xlsx|(*.csv)|*.csv";
+            fileDialog.Filter = "CSV File (*.csv)|*.csv";
             fileDialog.FilterIndex = 1;
             fileDialog.RestoreDirectory = true;
             if (fileDialog.ShowDialog() == DialogResult.OK)
@@ -28,16 +29,32 @@ namespace Magic_Astronauts
 
         private void Import_Btn_Click(object sender, EventArgs e)
         {
-            //List<Weather> weatherValues = File.ReadAllLines(txtFileName.Text)
-            weatherList = File.ReadAllLines(txtFileName.Text)
-            .Skip(1)
-            .Select(x => Weather.csvConverter(x))
-            .ToList();
-
-            var bindingList = new BindingList<Weather>(weatherList);
-            var source = new BindingSource(bindingList, null);
-            dataGridView1.DataSource = source;
+            try
+            {
+                weatherData = File.ReadAllLines(txtFileName.Text)
+                .Skip(1)
+                .Distinct()
+                .Select(x => Weather.csvConverter(x))
+                .ToList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(Text, "You have to choose a .csv-file", MessageBoxButtons.OK);
+            }
+            //var bindingList = new BindingList<Weather>(weatherList);
+            //var source = new BindingSource(bindingList, null);
+            dataGridView1.DataSource = weatherData;
             txtFileName.Clear();
+        }
+
+        private void save_Btn_Click(object sender, EventArgs e)
+        {
+            using (var context = new WeatherDbContext())
+            {
+                context.Weathers.AddRange(weatherData);
+                context.SaveChanges();
+            }
+            MessageBox.Show(Text, "Saved Successful", MessageBoxButtons.OK);
         }
     }
 }
