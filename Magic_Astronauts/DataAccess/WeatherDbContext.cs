@@ -15,9 +15,9 @@ public class WeatherDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<WeatherData>(entity =>
+        modelBuilder.Entity<Weather>(entity =>
         {
-            entity.HasKey(e=> e.Id);
+            entity.HasKey(e=> e.WeatherID);
 
         });
     }

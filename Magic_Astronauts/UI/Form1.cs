@@ -2,14 +2,15 @@ using Magic_Astronauts.Core;
 using Magic_Astronauts.DataAccess;
 using Microsoft.Data.SqlClient;
 using System.Data;
+using System.Text.RegularExpressions;
 
 namespace Magic_Astronauts
 {
-    //Man får byta lite namn här och var då jag använt Jonas kod och har då lite andra namn men samma innehåll
     public partial class Form1 : Form
     {
-        private static WeatherContext _context = new WeatherContext();
+        WeatherDbContext _context = new WeatherDbContext();
         IList<Weather> weatherData = new List<Weather>();
+        Regex filter = new Regex(@"[.\-:,\d\w]");
         public Form1()
         {
             _context.Database.EnsureCreated(); //Skapar dbn när programmet startar
@@ -18,62 +19,56 @@ namespace Magic_Astronauts
 
         private void Browse_btn_Click(object sender, EventArgs e)
         {
-           OpenFileDialog fileDialog = new OpenFileDialog();
-        fileDialog.Title = "Select File";
-        fileDialog.FileName = txtFileName.Text;
-        fileDialog.Filter = "CSV File (*.csv)|*.csv";
-        fileDialog.FilterIndex = 1;
-        fileDialog.RestoreDirectory = true;
-        if (fileDialog.ShowDialog() == DialogResult.OK)
-        {
-            txtFileName.Text = fileDialog.FileName;
-
-        }
-        weatherData = File.ReadAllLines(txtFileName.Text)
-            .Skip(1)
-            .Distinct()
-            .Select(x => WeatherData.csvConverter(x))
-            .ToList();
-        dataGridView1.DataSource = weatherData;
-        txtFileName.Clear();
-        }
-
-        private void Import_Btn_Click(object sender, EventArgs e)//Denna behövs inte
-        {
+            OpenFileDialog fileDialog = new OpenFileDialog();
+            fileDialog.Title = "Select File";
+            fileDialog.FileName = txtFileName.Text;
+            fileDialog.Filter = "CSV File (*.csv)|*.csv";
+            fileDialog.FilterIndex = 1;
+            fileDialog.RestoreDirectory = true;
+            if (fileDialog.ShowDialog() == DialogResult.OK)
+            {
+                txtFileName.Text = fileDialog.FileName;
+            }
             try
             {
                 weatherData = File.ReadAllLines(txtFileName.Text)
                 .Skip(1)
                 .Distinct()
-                .Select(x => Weather.csvConverter(x))
+                .Where(x => filter.IsMatch(x))
+                .Select(x => CsvConverter.Converter(x))
                 .ToList();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(Text, "You have to choose a .csv-file", MessageBoxButtons.OK);
+                MessageBox.Show(ex.Message);
             }
-            //var bindingList = new BindingList<Weather>(weatherList);
-            //var source = new BindingSource(bindingList, null);
             dataGridView1.DataSource = weatherData;
             txtFileName.Clear();
         }
-         private void insertToDbButton_Click(object sender, EventArgs e)
+
+        private void saveBtn_Click(object sender, EventArgs e)
         {
-         using (var _context = new WeatherContext())
-        {
-            _context.Weathers.AddRange(weatherData);
-            _context.SaveChanges()
-        }
-        MessageBox.Show(Text, "Saved Successful", MessageBoxButtons.OK);
-       }
-        private void save_Btn_Click(object sender, EventArgs e)//Denna är likadan som ovan
-        {
-            using (var context = new WeatherDbContext())
+            using (_context = new WeatherDbContext())
             {
-                context.Weathers.AddRange(weatherData);
-                context.SaveChanges();
+                _context.Weathers.AddRange(weatherData);
+                _context.SaveChanges();
             }
             MessageBox.Show(Text, "Saved Successful", MessageBoxButtons.OK);
+        }
+
+        private void load_Btn_Click(object sender, EventArgs e)
+        {
+            var selectQuery = 
+                "SELECT * FROM Weathers WHERE WeatherID % 2 != 0 AND Location LIKE 'Ute'OR WeatherID % 2 = 0 AND Location LIKE 'Inne'";
+
+            var connect = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MagicAstronauts;Integrated Security=True;");
+            var dataAdapter = new SqlDataAdapter(selectQuery, connect);
+
+            var commandBuilder = new SqlCommandBuilder(dataAdapter);
+            var dbData = new DataSet();
+            dataAdapter.Fill(dbData);
+            dataGridView1.ReadOnly = true;
+            dataGridView1.DataSource = dbData.Tables[0];
         }
     }
 }
