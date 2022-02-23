@@ -36,16 +36,20 @@
             this.Browse_btn = new System.Windows.Forms.Button();
             this.txtFileName = new System.Windows.Forms.TextBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.search_Btn = new System.Windows.Forms.Button();
             this.saveBtn = new System.Windows.Forms.Button();
             this.load_Btn = new System.Windows.Forms.Button();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.dateDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.timeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.locationDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tempDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.humidityDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.clear_Btn = new System.Windows.Forms.Button();
+            this.search_Btn = new System.Windows.Forms.Button();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.label1 = new System.Windows.Forms.Label();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -105,16 +109,6 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // search_Btn
-            // 
-            this.search_Btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.search_Btn.Location = new System.Drawing.Point(579, 12);
-            this.search_Btn.Name = "search_Btn";
-            this.search_Btn.Size = new System.Drawing.Size(140, 39);
-            this.search_Btn.TabIndex = 6;
-            this.search_Btn.Text = "Search";
-            this.search_Btn.UseVisualStyleBackColor = true;
-            // 
             // saveBtn
             // 
             this.saveBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -147,7 +141,6 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dateDataGridViewTextBoxColumn1,
-            this.timeDataGridViewTextBoxColumn,
             this.locationDataGridViewTextBoxColumn,
             this.tempDataGridViewTextBoxColumn1,
             this.humidityDataGridViewTextBoxColumn1});
@@ -156,7 +149,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 29;
-            this.dataGridView1.Size = new System.Drawing.Size(707, 647);
+            this.dataGridView1.Size = new System.Drawing.Size(576, 647);
             this.dataGridView1.TabIndex = 9;
             // 
             // dateDataGridViewTextBoxColumn1
@@ -166,14 +159,6 @@
             this.dateDataGridViewTextBoxColumn1.MinimumWidth = 6;
             this.dateDataGridViewTextBoxColumn1.Name = "dateDataGridViewTextBoxColumn1";
             this.dateDataGridViewTextBoxColumn1.Width = 125;
-            // 
-            // timeDataGridViewTextBoxColumn
-            // 
-            this.timeDataGridViewTextBoxColumn.DataPropertyName = "Time";
-            this.timeDataGridViewTextBoxColumn.HeaderText = "Time";
-            this.timeDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.timeDataGridViewTextBoxColumn.Name = "timeDataGridViewTextBoxColumn";
-            this.timeDataGridViewTextBoxColumn.Width = 125;
             // 
             // locationDataGridViewTextBoxColumn
             // 
@@ -199,15 +184,82 @@
             this.humidityDataGridViewTextBoxColumn1.Name = "humidityDataGridViewTextBoxColumn1";
             this.humidityDataGridViewTextBoxColumn1.Width = 125;
             // 
+            // clear_Btn
+            // 
+            this.clear_Btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.clear_Btn.Location = new System.Drawing.Point(158, 710);
+            this.clear_Btn.Name = "clear_Btn";
+            this.clear_Btn.Size = new System.Drawing.Size(140, 39);
+            this.clear_Btn.TabIndex = 10;
+            this.clear_Btn.Text = "Clear";
+            this.clear_Btn.UseVisualStyleBackColor = true;
+            // 
+            // search_Btn
+            // 
+            this.search_Btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.search_Btn.Location = new System.Drawing.Point(579, 12);
+            this.search_Btn.Name = "search_Btn";
+            this.search_Btn.Size = new System.Drawing.Size(140, 39);
+            this.search_Btn.TabIndex = 11;
+            this.search_Btn.Text = "Search";
+            this.search_Btn.UseVisualStyleBackColor = true;
+            // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.DataBindings.Add(new System.Windows.Forms.Binding("Checked", this.bindingSource1, "Date", true));
+            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dateTimePicker1.Location = new System.Drawing.Point(652, 72);
+            this.dateTimePicker1.MaxDate = new System.DateTime(2016, 11, 30, 0, 0, 0, 0);
+            this.dateTimePicker1.MinDate = new System.DateTime(2016, 10, 1, 0, 0, 0, 0);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(123, 27);
+            this.dateTimePicker1.TabIndex = 12;
+            this.dateTimePicker1.Value = new System.DateTime(2016, 10, 1, 0, 0, 0, 0);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.DataBindings.Add(new System.Windows.Forms.Binding("Tag", this.bindingSource1, "Temp", true));
+            this.label1.Location = new System.Drawing.Point(619, 179);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(46, 20);
+            this.label1.TabIndex = 13;
+            this.label1.Text = "Temp";
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(725, 117);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(82, 24);
+            this.checkBox1.TabIndex = 14;
+            this.checkBox1.Text = "Outside";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(619, 117);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(70, 24);
+            this.checkBox2.TabIndex = 15;
+            this.checkBox2.Text = "Inside";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(891, 761);
+            this.Controls.Add(this.checkBox2);
+            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.dateTimePicker1);
+            this.Controls.Add(this.search_Btn);
+            this.Controls.Add(this.clear_Btn);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.load_Btn);
             this.Controls.Add(this.saveBtn);
-            this.Controls.Add(this.search_Btn);
             this.Controls.Add(this.txtFileName);
             this.Controls.Add(this.Browse_btn);
             this.Name = "Form1";
@@ -224,7 +276,6 @@
         private TextBox txtFileName;
         private OpenFileDialog openFileDialog1;
         private BindingSource weatherBindingSource;
-        private Button search_Btn;
         private Button saveBtn;
         private DataGridViewTextBoxColumn dateDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn placeDataGridViewTextBoxColumn;
@@ -238,5 +289,11 @@
         private DataGridViewTextBoxColumn locationDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn tempDataGridViewTextBoxColumn1;
         private DataGridViewTextBoxColumn humidityDataGridViewTextBoxColumn1;
+        private Button clear_Btn;
+        private Button search_Btn;
+        private DateTimePicker dateTimePicker1;
+        private Label label1;
+        private CheckBox checkBox1;
+        private CheckBox checkBox2;
     }
 }

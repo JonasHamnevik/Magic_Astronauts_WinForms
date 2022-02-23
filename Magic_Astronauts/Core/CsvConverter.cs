@@ -1,39 +1,30 @@
 ﻿using System.Globalization;
-using System.Text;
 
 namespace Magic_Astronauts.Core
 {
     public class CsvConverter : Weather
     {
-        public static Weather Converter(string csvLine)
+        public static Weather Converter(string csvLine, out Weather data)
         {
-            Weather weatherData = new Weather();
-            decimal result;
+            IList<Weather> weatherList = new List<Weather>();
+            data = new Weather();
 
             string[] values = csvLine
                 .Trim()
-                .Split(',', ' ');
-            foreach (var item in values)
+                .Split(',');
+            data = new Weather
             {
-                weatherData.Date = values[0];
-                weatherData.Time = values[1];
-                weatherData.Location = values[2];
-                if (!decimal.TryParse(values[3], out result))
-                {
-                    break;
-                }
-                else
-                {
-                    weatherData.Temp = decimal.Parse(values[3], CultureInfo.InvariantCulture);
-                }
-                weatherData.Humidity = decimal.Parse(values[4]);
-            }
-            return weatherData;
-            //weatherData.Date = values[0];
-            //weatherData.Time = values[1];
-            //weatherData.Location = values[2];
-            //weatherData.Temp = decimal.Parse(values[3]);
-            //weatherData.Humidity = decimal.Parse(values[4]);
+                Date = Convert.ToDateTime(values[0]),
+                Location = values[1],
+                Temp = float.Parse(values[2], NumberStyles.Float, CultureInfo.InvariantCulture),
+                Humidity = int.Parse(values[3])
+            };
+            return data;
+            
+            //weatherData.Date = DateTime.ParseExact(values[0].Substring(0, 10), "yyyy-MM-dd", CultureInfo.CurrentCulture);
+            //weatherData.Location = values[1];
+            //weatherData.Temp = float.Parse(values[2], NumberStyles.Float, CultureInfo.InvariantCulture);
+            //weatherData.Humidity = int.Parse(values[3]);
             //return weatherData;
         }
     }

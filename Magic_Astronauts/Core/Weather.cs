@@ -3,9 +3,8 @@
 public class Weather
 {
     public int WeatherID { get; set; }
-    public string Date { get; set; }
-    public string Time { get; set; }
+    public DateTime Date { get; set; }
     public string Location { get; set; }
-    public decimal Temp { get; set; }
-    public decimal Humidity { get; set; }
+    public float Temp { get; set; }
+    public int Humidity { get; set; }
 }

@@ -2,6 +2,7 @@ using Magic_Astronauts.Core;
 using Magic_Astronauts.DataAccess;
 using Microsoft.Data.SqlClient;
 using System.Data;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace Magic_Astronauts
@@ -10,7 +11,8 @@ namespace Magic_Astronauts
     {
         WeatherDbContext _context = new WeatherDbContext();
         IList<Weather> weatherData = new List<Weather>();
-        Regex filter = new Regex(@"[.\-:,\d\w]");
+        IList<string> lineData = new List<string>();
+        //Regex filter = new Regex(@"[.\-:,\d\w]");
         public Form1()
         {
             _context.Database.EnsureCreated(); //Skapar dbn när programmet startar
@@ -31,12 +33,22 @@ namespace Magic_Astronauts
             }
             try
             {
-                weatherData = File.ReadAllLines(txtFileName.Text)
+                lineData = File.ReadAllLines(txtFileName.Text)
                 .Skip(1)
                 .Distinct()
-                .Where(x => filter.IsMatch(x))
-                .Select(x => CsvConverter.Converter(x))
                 .ToList();
+
+                for (int i = 0; i < lineData.Count; i++)
+                {
+                    foreach (var line in lineData)
+                    {
+                        CsvConverter.Converter(line, out var data);
+                        weatherData.Add(data);
+                    }
+                }
+                //.Where(x => filter.IsMatch(x))
+                //.Select(x => CsvConverter.Converter(x))
+                //.ToList();
             }
             catch (Exception ex)
             {
